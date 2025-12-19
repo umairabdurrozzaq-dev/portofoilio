@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Nama Anda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            DEFAULT: '#14b8a6',
+                            dark: '#0d9488',
+                            light: '#5eead4'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for elements that can't be fully replicated with Tailwind */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #14b8a6;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .slider .fa-sun, .slider .fa-moon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #f1f5f9;
+            transition: opacity 0.3s;
+        }
+        
+        .slider .fa-sun {
+            left: 8px;
+        }
+        
+        .slider .fa-moon {
+            right: 8px;
+            opacity: 0;
+        }
+        
+        input:checked + .slider .fa-sun {
+            opacity: 0;
+        }
+        
+        input:checked + .slider .fa-moon {
+            opacity: 1;
+        }
+        
+        .hero::before, .skills-section::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .hero::before {
+            top: -50%;
+            right: -10%;
+            background: radial-gradient(circle, rgba(12, 5, 113, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+        
+        .dark .hero::before {
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.1) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+        
+        .skills-section::before {
+            bottom: -30%;
+            left: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(94, 234, 212, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+        
+        .dark .skills-section::before {
+            background: radial-gradient(circle, rgba(11, 6, 118, 0.489) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+        
+        .toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white dark:bg-blue-900 dark:text-gray-100 transition-colors duration-300 overflow-x-hidden relative">
+    <!-- Background gradient -->
+    <div class="fixed inset-0 bg-gradient-to-br from-teal-100/10 via-transparent to-teal-100/10 dark:from-gray-900/80 dark:to-gray-800/80 -z-10"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm z-50 transition-all duration-300">
+        <div class="container mx-auto px-5">
+            <nav class="flex justify-between items-center py-4">
+                <div class="text-xl font-bold text-teal-500">Portfolio</div>
+                <ul class="nav-links hidden md:flex items-center gap-8">
+                    <li><a href="#home" class="relative text-gray-800 dark:text-gray-100 font-medium hover:text-teal-500 transition-colors">Home</a></li>
+                    <li><a href="#about" class="relative text-gray-800 dark:text-gray-100 font-medium hover:text-teal-500 transition-colors">About</a></li>
+                    <li><a href="#skills" class="relative text-gray-800 dark:text-gray-100 font-medium hover:text-teal-500 transition-colors">Skills</a></li>
+                    <li><a href="#projects" class="relative text-gray-800 dark:text-gray-100 font-medium hover:text-teal-500 transition-colors">Projects</a></li>
+                    <li><a href="#contact" class="relative text-gray-800 dark:text-gray-100 font-medium hover:text-teal-500 transition-colors">Contact</a></li>
+                    <li>
+                        <label class="relative inline-block w-14 h-8">
+                            <input type="checkbox" id="darkModeToggle" class="opacity-0 w-0 h-0">
+                            <span class="slider absolute cursor-pointer inset-0 bg-gray-300 transition-all rounded-full before:absolute before:content-[''] before:h-6 before:w-6 before:left-1 before:bottom-1 before:bg-white before:transition-all before:rounded-full"></span>
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </label>
+                    </li>
+                </ul>
+                <div class="menu-toggle md:hidden flex flex-col cursor-pointer">
+                    <span class="w-6 h-0.5 bg-gray-800 dark:bg-gray-100 my-1 transition-all"></span>
+                    <span class="w-6 h-0.5 bg-gray-800 dark:bg-gray-100 my-1 transition-all"></span>
+                    <span class="w-6 h-0.5 bg-gray-800 dark:bg-gray-100 my-1 transition-all"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero flex items-center min-h-screen pt-20 relative">
+        <div class="container mx-auto px-5">
+            <div class="grid md:grid-cols-2 gap-10 items-center relative z-10">
+                <div class="hero-text">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Hai, Saya <br> <span class="text-teal-500">umair abdurrozzaq</span></h1>
+                    <p class="text-xl mb-4">Full Stack Developer</p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-lg">Saya adalah seorang developer yang passionate menciptakan solusi digital yang inovatif dan user-friendly dengan teknologi modern.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#projects" class="btn bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold text-center transition-all transform hover:-translate-y-1 hover:shadow-lg">Lihat Proyek</a>
+                        <a href="#contact" class="btn border-2 border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white py-3 px-6 rounded-lg font-semibold text-center transition-all transform hover:-translate-y-1">Hubungi Saya</a>
+                    </div>
+                </div>
+                <div class="hero-image flex justify-center items-center">
+                    <img src="./imeges/WhatsApp Image 2025-11-08 at 15.34.57_d81b4a3f.jpg" alt="Profile Picture" class="max-w-full h-auto rounded-xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-white dark:bg-gray-900/50 backdrop-blur-md py-20">
+        <div class="container mx-auto px-5">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block after:content-[''] after:absolute after:-bottom-2.5 after:left-1/2 after:-translate-x-1/2 after:w-16 after:h-1 after:bg-teal-500 after:rounded-md">Tentang Saya</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="about-text">
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">Saya adalah seorang Full Stack Developer dengan pengalaman lebih dari 3 tahun dalam mengembangkan aplikasi web dan mobile. Saya memiliki passion dalam menciptakan solusi digital yang inovatif dan user-friendly.</p>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">Saya percaya bahwa teknologi harus mempermudah kehidupan manusia, dan itulah mengapa saya selalu berusaha untuk menghasilkan produk berkualitas tinggi yang memenuhi kebutuhan pengguna.</p>
+                </div>
+                <div class="about-image flex justify-center items-center">
+                    <img src="./imeges/WIN_20251015_19_41_15_Pro.jpg" alt="About Image" class="max-w-full h-auto rounded-xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section py-20 relative overflow-hidden">
+        <div class="container mx-auto px-5 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block after:content-[''] after:absolute after:-bottom-2.5 after:left-1/2 after:-translate-x-1/2 after:w-16 after:h-1 after:bg-teal-500 after:rounded-md">Keahlian Saya</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-xl p-8 shadow-md text-center transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="w-20 h-20 flex items-center justify-center mx-auto mb-6 rounded-full bg-gray-100 dark:bg-gray-700">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5 Logo" class="w-12 h-auto">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">HTML</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Membangun struktur semantic dan aksesibel untuk website modern</p>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-xl p-8 shadow-md text-center transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="w-20 h-20 flex items-center justify-center mx-auto mb-6 rounded-full bg-gray-100 dark:bg-gray-700">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS3 Logo" class="w-12 h-auto">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">CSS</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Desain responsif dan animasi yang menarik untuk pengalaman pengguna</p>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-xl p-8 shadow-md text-center transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="w-20 h-20 flex items-center justify-center mx-auto mb-6 rounded-full bg-gray-100 dark:bg-gray-700">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind CSS Logo" class="w-12 h-auto">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Tailwind CSS</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Framework utility-first untuk pengembangan UI yang cepat dan konsisten</p>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-xl p-8 shadow-md text-center transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="w-20 h-20 flex items-center justify-center mx-auto mb-6 rounded-full bg-gray-100 dark:bg-gray-700">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub Logo" class="w-12 h-auto">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">GitHub</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Version control dan kolaborasi tim dengan Git dan GitHub</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-32">
+        <div class="container mx-auto px-7">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold relative inline-block after:content-[''] after:absolute after:-bottom-2.5 after:left-1/2 after:-translate-x-1/2 after:w-16 after:h-1 after:bg-teal-500 after:rounded-md">Proyek Saya</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-5">
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAHS72ccj_G7KUIxkXZQRqwYmstnXf15EnBA&s" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">baca kitab</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-20">Untuk melatih membaca bahasa Arab tanpa harakat Biar terbiasa menentukan bacaan sendiri dengan benar, melatih kepekaan terhadap susunan kalimat, serta menghindari kesalahan makna saat membaca kitab.</p>
+                        <a href="https://studio.youtube.com/playlist/PLjkHGgkFE2WCQyqq8tWrucbcWgdtoWoix/edit" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQslthBRF51NpSr10mddtOthn-TUi0-bv3Wsg&s" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">Hiwar</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-10">Melatih kemampuan berbicara bahasa Arab Hiwar dgn bahasa arab membantu membiasakan diri berbicara menggunakan bahasa Arab dengan susunan kalimat yang benar, sehingga kemampuan berbicara semakin terasa.</p>
+                        <a href="https://studio.youtube.com/playlist/PLjkHGgkFE2WAv2VtebkEcLkg4e2A1l0Rc/edit" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4ReRjMg-JUQuZAzYQPyaI27mKAght6dvVmA&s" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">tafsir al-zalzalah</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-20">Untuk memahami gambaran hari kiamat Surah Al-Zalzalah menjelaskan peristiwa dahsyat saat kiamat terjadi, sehingga kita bisa memahami keadaan akhir zaman dengan lebih jelas.</p>
+                        <a href="https://studio.youtube.com/playlist/PLjkHGgkFE2WCg-EqZ0jawtcG4dTpjFDjQ/edit" class=" mt-6 btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="data:image/jpeg;base64,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" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">tentang orang tua</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-4">disini saya berbicara tentang pekerjaan orang tua saya dgn bahasa arab yg bertujuan untuk memahir kan saya agar bisa berbicara dengan benar dalam bahasa arab.</p>
+                        <a href="https://studio.youtube.com/playlist/PLjkHGgkFE2WABTq4NyVJolmynYSQ_l6Sq/edit" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="./imeges/image.png" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">kegiatan di pondok</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-5">disini saya berbicara tentang kegiatan yang ada di pondok pesantren dengan bahasa arab agar saya bisa mahir dalam berbicara bahasa arab.</p>
+                        <a href="https://studio.youtube.com/playlist/PLjkHGgkFE2WBytvSYOE8lX55_YVTejlbe/edit" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="./portofolio/imgges/Screenshot 2025-12-18 081311.png" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">poster</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-20">disini saya membuat poster yg berjudul manfaat tahajji</p>
+                        <a href="https://drive.google.com/file/d/1BIIUvOvwmhrXFzCYWwxPdQ2keBsXzNVl/view?usp=drive_link" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLW4Ow7avkjYgHJNIHh5netMLXEYvNZErFng&s" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">tasmi' juz 30</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-24">untuk menguji hafalan juz 30 yg di mana terkadang juz ini dilupakan untuk di murojaah karna merasa sudah mutqin</p>
+                        <a href="https://drive.google.com/file/d/1AmIb6OxIqaQ0NWGiq14-2vU1TShsxCFO/view?usp=drive_link" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="./portofolio/imgges/WhatsApp Image 2025-11-22 at 15.53.55_ee064380.jpg" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">ujian kitab tahajji</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-10">Melatih ketelitian dan kefasihan bacaan
+                         Karena ujian tahajji dilakukan satu per satu dan diawasi langsung, kita dituntut untuk membaca dengan lebih hati-hati dan fokus. Hal ini melatih ketelitian dalam memperhatikan makhraj huruf</p>
+                        <a href="https://drive.google.com/file/d/1E-FDz867kbnQiBzzqUQtazjuBzt6kgxx/view?usp=drive_link" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTExO3liRrO75b17md8T95G14GPfGscVdWbqA&s" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">projek python</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-24">di tugas ini saya membuat table jadwal solat ya yg ber fungsi untuk memurojaah codingan python</p>
+                        <a href="https://github.com/umairabdurrozzaq-dev/jadwal-shalat" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden shadow-md transition-all transform hover:-translate-y-2 hover:shadow-lg">
+                    <div class="project-image h-48 overflow-hidden">
+                        <img src="data:image/jpeg;base64,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" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-300">projek slicing</h3>
+                        <p class="text-gray-900 dark:text-gray-300 mb-24">yag bertujuan untuk latiahn sebelum membuat portofolio agar jikja kita sudah mulai memebuat kita tersa gampang dalam membuat nya</p>
+                        <a href="https://github.com/umairabdurrozzaq-dev/jadwal-shalat" class="btn bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold inline-block transition-all">Detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gray-50/50 dark:bg-gray-800/50 backdrop-blur-md py-20">
+        <div class="container mx-auto px-5">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block after:content-[''] after:absolute after:-bottom-2.5 after:left-1/2 after:-translate-x-1/2 after:w-16 after:h-1 after:bg-teal-500 after:rounded-md">Hubungi Saya</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md p-8 rounded-xl shadow-md">
+                    <form id="contactForm">
+                        <div class="mb-6">
+                            <label for="name" class="block mb-2 font-semibold text-gray-800 dark:text-gray-100">Nama</label>
+                            <input type="text" id="name" name="name" class="w-full py-3 px-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-teal-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="email" class="block mb-2 font-semibold text-gray-800 dark:text-gray-100">Email</label>
+                            <input type="email" id="email" name="email" class="w-full py-3 px-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-teal-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block mb-2 font-semibold text-gray-800 dark:text-gray-100">Pesan</label>
+                            <textarea id="message" name="message" rows="5" class="w-full py-3 px-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-teal-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 resize-vertical" required></textarea>
+                        </div>
+                        <button type="submit" class="btn bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-lg font-semibold transition-all">Kirim Pesan</button>
+                        </form>
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <h3 class="text-2xl font-semibold mb-4">Mari Berkolaborasi</h3>
+                    <p class="text-gry-600 dark:text-gray-300 mb-8">Saya selalu terbuka untuk diskusi tentang proyek baru, ide kreatif, atau kesempatan untuk menjadi bagian dari visi Anda.</p>
+                    <div class="flex gap-4">
+                        <a href="https://github.com/" class="w-10 h-10 bg-teal-500 hover:bg-teal-600 text-white rounded-full flex items-center justify-center transition-all transform hover:-translate-y-1">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://web.whatsapp.com/" class="w-10 h-10 bg-teal-500 hover:bg-teal-600 text-white rounded-full flex items-center justify-center transition-all transform hover:-translate-y-1">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://studio.youtube.com/channel/UCwbpB155RoU7lYGWBc0rHHQ/videos/upload?filter=%5B%5D&sort=%7B%22columnType%22%3A%22date%22%2C%22sortOrder%22%3A%22DESCENDING%22%7D" class="w-10 h-10 bg-teal-500 hover:bg-teal-600 text-white rounded-full flex items-center justify-center transition-all transform hover:-translate-y-1">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" class="w-10 h-10 bg-teal-500 hover:bg-teal-600 text-white rounded-full flex items-center justify-center transition-all transform hover:-translate-y-1">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 dark:bg-black text-white py-8 text-center">
+        <div class="container mx-auto px-5">
+            <div class="footer-content">
+                <p>&copy; 2025 Portfolio. umair abdurrozzaq</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast fixed bottom-5 right-5 bg-teal-500 text-white py-4 px-6 rounded-lg shadow-lg z-50">
+        Pesan Anda telah terkirim!
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('hidden');
+            navLinks.classList.toggle('flex');
+            navLinks.classList.toggle('absolute');
+            navLinks.classList.toggle('top-full');
+            navLinks.classList.toggle('left-0');
+            navLinks.classList.toggle('w-full');
+            navLinks.classList.toggle('bg-white');
+            navLinks.classList.toggle('dark:bg-gray-800');
+            navLinks.classList.toggle('flex-col');
+            navLinks.classList.toggle('p-4');
+            navLinks.classList.toggle('shadow-md');
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                navLinks.classList.add('hidden');
+                navLinks.classList.remove('flex');
+            });
+        });
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+
+        // Form Submission
+        const contactForm = document.getElementById('contactForm');
+        const toast = document.getElementById('toast');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would normally send the data to a server
+            console.log({ name, email, message });
+            
+            // Show toast notification
+            toast.classList.add('show');
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        });
+
+        // Intersection Observer for Fade-in Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark');
+            darkModeToggle.checked = true;
+        }
+
+        // Listen for toggle changes
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
